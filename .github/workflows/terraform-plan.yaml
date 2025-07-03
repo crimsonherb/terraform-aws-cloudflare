@@ -1,1 +1,44 @@
 name: Terraform Plan
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  pull-request: write
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    env:
+      ASD: ${{ASD}}
+      SAD: ${{SAD}}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.12.0
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform format check
+        run: terraform fmt -check
+
+      - name: Terraform Validate
+        run: terraform validate
+      
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -out=tfplan
+
+      - name: Upload Plan for PR Comment
+        uses: actions/upload-artifact@v4
+        with:
+          name: tfplan
+          path: tfplan
