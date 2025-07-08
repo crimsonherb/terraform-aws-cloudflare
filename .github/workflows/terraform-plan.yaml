@@ -27,14 +27,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Debug — runner started
-        run: echo "Runner started"
-
-      - name: Debug — list files
-        run: |
-          pwd
-          ls -al
-
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
@@ -50,9 +42,10 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: terraform plan -out=tfplan
+        working-directory: terraform
 
       - name: Upload Plan for PR Comment
         uses: actions/upload-artifact@v4
         with:
           name: tfplan
-          path: tfplan
+          path: terraform/tfplan
