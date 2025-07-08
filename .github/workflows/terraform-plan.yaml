@@ -28,6 +28,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Debug Step
+        run: echo "Runner started"
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
