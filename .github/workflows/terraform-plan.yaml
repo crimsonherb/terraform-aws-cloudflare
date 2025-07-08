@@ -13,8 +13,16 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      ASD: ${{ASD}}
-      SAD: ${{SAD}}
+      # Secret
+      TF_VAR_aws_region: ${{ secrets.AWS_REGION }}
+      TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      TF_VAR_cloudflare_zone_id: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+      TF_VAR_site_domain: ${{ secrets.SITE_DOMAIN }}
+
+      # Non-secret
+      TF_VAR_error_document: "error.html"
+      TF_VAR_index_document: "index.html"
+      TF_VAR_environment: "production"
 
     steps:
       - uses: actions/checkout@v4
