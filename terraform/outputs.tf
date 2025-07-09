@@ -5,5 +5,5 @@ output "website_url" {
 
 output "cloudfront_domain_name" {
   description = "CloudFront distribution domain name"
-  value       = aws_cloudfront_distribution.cdn.domain_name
+  value       = aws_cloudfront_distribution.s3_distribution.domain_name
 }
