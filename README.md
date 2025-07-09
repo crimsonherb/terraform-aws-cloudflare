@@ -4,4 +4,3 @@ Practice project to deploy a static website using Terraform, AWS (S3 Bucket), an
 
 
 This is to simulate change
-Next Change
