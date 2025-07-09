@@ -9,7 +9,7 @@ resource "aws_s3_bucket" "site" {
 
 resource "aws_s3_bucket_acl" "site_control_list" {
   bucket = aws_s3_bucket.site.id
-  acl = "private"
+  acl    = "private"
 }
 
 resource "aws_s3_bucket_versioning" "site_versioning" {
@@ -33,11 +33,11 @@ resource "aws_s3_bucket_website_configuration" "site_website" {
 
 
 resource "aws_cloudfront_origin_access_control" "oac" {
-  name                               = "${var.site_domain}-oac"
-  description                        = "Origin Access Control for ${var.site_domain}"
-  origin_access_control_origin_type  = "s3"
-  signing_behavior                   = "always"
-  signing_protocol                   = "sigv4"
+  name                              = "${var.site_domain}-oac"
+  description                       = "Origin Access Control for ${var.site_domain}"
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
 }
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
@@ -54,10 +54,10 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
   default_cache_behavior {
     # Using the CachingOptimized managed policy ID:
-    cache_policy_id  = "658327ea-f89d-4fab-a63d-7e88639e58f6"
-    allowed_methods  = ["GET", "HEAD"]
-    cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "s3-origin"
+    cache_policy_id        = "658327ea-f89d-4fab-a63d-7e88639e58f6"
+    allowed_methods        = ["GET", "HEAD"]
+    cached_methods         = ["GET", "HEAD"]
+    target_origin_id       = "s3-origin"
     viewer_protocol_policy = "redirect-to-https"
   }
 
@@ -78,11 +78,11 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
 resource "cloudflare_dns_record" "site_cname" {
   zone_id = var.cloudflare_zone_id
-  name = var.site_domain
-  type = "CNAME"
+  name    = var.site_domain
+  type    = "CNAME"
   comment = "Domain verification record"
   content = "198.51.100.4"
   proxied = true
-  tags = ["owner:dns-team"]
-  ttl = 1
+  tags    = ["owner:dns-team"]
+  ttl     = 1
 }
