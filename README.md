@@ -3,3 +3,7 @@
 Practice project to deploy a static website using Terraform, AWS (S3 Bucket), and Cloudflare(Domain).
 
 Idea here is to allow me deploy a basic website but the infrastructure would be setup through Terraform
+
+Currently still need to streamline the following:
+Data going into S3 bucket
+Role permissions
