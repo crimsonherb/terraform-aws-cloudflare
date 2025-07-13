@@ -19,7 +19,6 @@ jobs:
       TF_VAR_cloudflare_zone_id: ${{ secrets.CLOUDFLARE_ZONE_ID }}
       TF_VAR_site_domain: ${{ secrets.SITE_DOMAIN }}
 
-      # Non-secret
       TF_VAR_error_document: "error.html"
       TF_VAR_index_document: "index.html"
       TF_VAR_environment: "production"
@@ -56,28 +55,27 @@ jobs:
           script: |
             const fs = require('fs');
             const plan = fs.readFileSync('terraform/plan_output.txt', 'utf8');
-
-            const truncatedPlan = plan.length > 65000 
+            const truncatedPlan = plan.length > 65000
               ? plan.slice(0, 65000) + '\n\n[...output truncated]'
               : plan;
 
-            const body = `
-#### 🛠 Terraform Plan Result
+            const comment = [
+              '#### 🛠 Terraform Plan Result',
+              '',
+              '<details><summary>Click to expand</summary>',
+              '',
+              '```hcl',
+              truncatedPlan,
+              '```',
+              '',
+              '</details>',
+              '',
+              `*Triggered by @${{ github.actor }} on PR #${{ github.event.pull_request.number }}*`
+            ].join('\n');
 
-<details><summary>Click to expand</summary>
-
-\`\`\`hcl
-${truncatedPlan}
-\`\`\`
-
-</details>
-
-*Triggered by @${{ github.actor }} on PR #${{ github.event.pull_request.number }}*
-`;
-
-            github.rest.issues.createComment({
+            await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: body
-            })
+              body: comment
+            });
