@@ -13,3 +13,5 @@ Role permissions
 It turns out it would be hard to utilize the artifact created by a job and have it used on a seperate workflow, so I would be needing to combine them
 
 I opted out from combining them because it would add another layer of complexity and make it so that the terraform apply would not use the artifact created, however, I will be using asistance to make it so that the terraform plan will write on my PR
+
+Looking now, I think this writing on my PR is creating a huge unnecessary effort, but will have one last try before scrapping the idea altogether
