@@ -7,3 +7,5 @@ Idea here is to allow me deploy a basic website but the infrastructure would be 
 Currently still need to streamline the following:
 Data going into S3 bucket
 Role permissions
+
+It turns out it would be hard to utilize the artifact created by a job and have it used on a seperate workflow, so I would be needing to combine them
