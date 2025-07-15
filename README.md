@@ -21,3 +21,5 @@ Last attempt
 So I experienced drift since most of the time, I've been testing directly by performing terraform apply through Github Actions, turns out I need to be able to sync it with my local terraform cli.
 
 I need to find a solution to this
+
+Added another S3 bucket that will serve as my source of truth for current state of my infra
