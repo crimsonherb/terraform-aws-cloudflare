@@ -17,3 +17,7 @@ I opted out from combining them because it would add another layer of complexity
 Looking now, I think this writing on my PR is creating a huge unnecessary effort, but will have one last try before scrapping the idea altogether
 
 Last attempt
+
+So I experienced drift since most of the time, I've been testing directly by performing terraform apply through Github Actions, turns out I need to be able to sync it with my local terraform cli.
+
+I need to find a solution to this

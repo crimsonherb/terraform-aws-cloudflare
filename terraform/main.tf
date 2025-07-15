@@ -80,8 +80,8 @@ resource "cloudflare_dns_record" "site_cname" {
   zone_id = var.cloudflare_zone_id
   name    = var.site_domain
   type    = "CNAME"
-  comment = "Domain verification record"
-  content = "198.51.100.4"
+  comment = "Points to cloudfront"
+  content = aws_cloudfront_distribution.s3_distribution.domain_name
   proxied = true
   tags    = ["owner:dns-team"]
   ttl     = 1
