@@ -7,9 +7,21 @@ resource "aws_s3_bucket" "site" {
   }
 }
 
-resource "aws_s3_bucket_acl" "site_control_list" {
+resource "aws_s3_bucket_ownership_controls" "site_ownership_control" {
   bucket = aws_s3_bucket.site.id
-  acl    = "private"
+
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
+resource "aws_s3_bucket_public_access_block" "site_block" {
+  bucket = aws_s3_bucket.site.id
+
+  block_public_acls       = true
+  block_public_policy     = false # Needed for OAC to access via policy
+  ignore_public_acls      = true
+  restrict_public_buckets = false
 }
 
 resource "aws_s3_bucket_versioning" "site_versioning" {
@@ -19,16 +31,28 @@ resource "aws_s3_bucket_versioning" "site_versioning" {
   }
 }
 
-resource "aws_s3_bucket_website_configuration" "site_website" {
+resource "aws_s3_bucket_policy" "site_policy" {
   bucket = aws_s3_bucket.site.id
 
-  index_document {
-    suffix = var.index_document
-  }
-
-  error_document {
-    key = var.error_document
-  }
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Sid    = "AllowCloudFrontServicePrincipalReadOnly",
+        Effect = "Allow",
+        Principal = {
+          Service = "cloudfront.amazonaws.com"
+        },
+        Action   = ["s3:GetObject"],
+        Resource = "${aws_s3_bucket.site.arn}/*",
+        Condition = {
+          StringEquals = {
+            "AWS:SourceArn" = aws_cloudfront_distribution.s3_distribution.arn
+          }
+        }
+      }
+    ]
+  })
 }
 
 

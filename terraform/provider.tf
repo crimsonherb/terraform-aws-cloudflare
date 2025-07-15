@@ -12,10 +12,10 @@ terraform {
   }
 
   backend "s3" {
-    bucket         = "terraform-state-bucket-joma-2025"
-    key            = "cloudflare/terraform.tfstate"
-    region         = "ap-southeast-1"
-    use_lockfile  = true
+    bucket       = "terraform-state-bucket-joma-2025"
+    key          = "cloudflare/terraform.tfstate"
+    region       = "ap-southeast-1"
+    use_lockfile = true
   }
 }
 
