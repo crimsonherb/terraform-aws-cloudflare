@@ -107,6 +107,5 @@ resource "cloudflare_dns_record" "site_cname" {
   comment = "Points to cloudfront"
   content = aws_cloudfront_distribution.s3_distribution.domain_name
   proxied = true
-  tags    = ["owner:dns-team"]
   ttl     = 1
 }
