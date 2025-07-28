@@ -100,6 +100,19 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 }
 
+resource "aws_acm_certificate" "site_cert" {
+  domain_name       = var.site_domain
+  validation_method = "DNS"
+
+  tags = {
+    Environment = var.environment
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
 resource "cloudflare_dns_record" "site_cname" {
   zone_id = var.cloudflare_zone_id
   name    = var.site_domain
@@ -108,4 +121,30 @@ resource "cloudflare_dns_record" "site_cname" {
   content = aws_cloudfront_distribution.s3_distribution.domain_name
   proxied = true
   ttl     = 1
+}
+
+resource "cloudflare_dns_record" "cert_validation" {
+  for_each = {
+    for dvo in aws_acm_certificate.site_cert.domain_validation_options : dvo.domain_name => {
+      name  = dvo.resource_record_name
+      type  = dvo.resource_record_type
+      value = dvo.resource_record_value
+    }
+  }
+
+  zone_id = var.cloudflare_zone_id
+  name    = each.value.name
+  type    = each.value.type
+  ttl     = 3600
+  comment = "ACM DNS validation record"
+  content = each.value.value
+  proxied = false
+
+  # Optional settings block, only applicable if needed
+  # You can remove or customize if not relevant to validation records
+  settings = {
+    ipv4_only = false
+    ipv6_only = false
+  }
+
 }
