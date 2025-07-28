@@ -138,7 +138,7 @@ resource "cloudflare_dns_record" "cert_validation" {
   ttl     = 3600
   comment = "ACM DNS validation record"
   content = each.value.value
-  proxied = false 
+  proxied = false
 
   # Optional settings block, only applicable if needed
   # You can remove or customize if not relevant to validation records
