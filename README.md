@@ -23,3 +23,5 @@ So I experienced drift since most of the time, I've been testing directly by per
 I need to find a solution to this
 
 Added another S3 bucket that will serve as my source of truth for current state of my infra
+
+Going back, it was to note that we opted out of the aws_s3_bucket_website_configuration option because this option would not allow you to connect over https. I also noted that I would be needing to make a certificate and also certificate validation
