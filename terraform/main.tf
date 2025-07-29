@@ -122,7 +122,7 @@ resource "cloudflare_dns_record" "site_cname" {
   type    = "CNAME"
   comment = "Points to cloudfront"
   content = aws_cloudfront_distribution.s3_distribution.domain_name
-  proxied = true
+  proxied = false
   ttl     = 1
 }
 
