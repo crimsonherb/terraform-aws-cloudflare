@@ -76,6 +76,8 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   comment             = "CloudFront distribution for ${var.site_domain}"
   default_root_object = var.index_document
 
+  aliases = [var.site_domain]
+
   default_cache_behavior {
     # Using the CachingOptimized managed policy ID:
     cache_policy_id        = "658327ea-f89d-4fab-a63d-7e88639e58f6"
